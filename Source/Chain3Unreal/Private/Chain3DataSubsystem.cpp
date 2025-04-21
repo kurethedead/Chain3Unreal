@@ -34,7 +34,18 @@ void UChain3DataSubsystem::Deinitialize()
     }
 }
 
-FString UChain3DataSubsystem::GetDataPath() { return FPaths::ProjectDir() + "StreamingAssets/"; }
+FString UChain3DataSubsystem::GetDataPath()
+{
+#if WITH_EDITOR
+    return FPaths::ProjectDir() + "StreamingAssets/";
+#else
+    FString Path = FPaths::ProjectDir();
+    Path.RemoveFromEnd("/");
+    FString PathPart, FilenamePart, ExtensionPart;
+    FPaths::Split(Path, PathPart, FilenamePart, ExtensionPart);
+    return PathPart + "/StreamingAssets/";
+#endif
+}
 
 FString UChain3DataSubsystem::StripString(FString Input)
 {
