@@ -7,8 +7,7 @@
 #include "Chain3DataSubsystem.generated.h"
 
 /**
- * By default this subsystem will auto load persistent state on game start, and auto save on game end.
- If you want to disable this, extend this class with a blueprint and unset the flags bLoadDataOnStart/bSaveDataOnExit.
+ * This subsystem handles interacting with the CHAIN3 persistent data system (doors + shared data).
  */
 UCLASS(DisplayName = "Chain Data Subsystem", Blueprintable)
 class CHAIN3UNREAL_API UChain3DataSubsystem : public UGameInstanceSubsystem
@@ -20,29 +19,37 @@ public:
     virtual void Deinitialize() override;
     virtual bool ShouldCreateSubsystem(UObject *Outer) const override;
 
-    // Loads persistent state from exit.door and shareddata.data
-    // By default, this subsystem calls this on Initialize
-    UFUNCTION(BlueprintCallable)
+    // Loads persistent state from enter.door and shareddata.data
+    // By default, this subsystem calls this when the game starts.
+    // If you want to disable this behaviour, extend this class with a blueprint and set member variable bLoadDataOnStart = false.
+    UFUNCTION(BlueprintCallable, Category = "Chain Data")
     void LoadData();
 
     // Saves persistent state to exit.door and shareddata.data
-    // By default, this subsystem calls this on Deinitialize
-    UFUNCTION(BlueprintCallable)
+    // By default, this subsystem calls this when the game ends.
+    // If you want to disable this, extend this class with a blueprint and set member variable bSaveDataOnExit = false.
+    UFUNCTION(BlueprintCallable, Category = "Chain Data")
     void SaveData();
 
-    UFUNCTION(BlueprintPure)
+    // Gets the door you entered from enter.door
+    UFUNCTION(BlueprintPure, Category = "Chain Data")
     FString GetEnterDoor() { return EnterDoor; }
 
-    UFUNCTION(BlueprintCallable)
+    // Sets the door you will exit from (writes to exit.door)
+    // You will still need to save the data
+    UFUNCTION(BlueprintCallable, Category = "Chain Data")
     void SetExitDoor(FString _ExitDoor) { ExitDoor = _ExitDoor; }
 
-    UFUNCTION(BlueprintCallable)
+    // Set a shared data flag.
+    UFUNCTION(BlueprintCallable, Category = "Chain Data")
     void SetFlag(FString Flag);
 
-    UFUNCTION(BlueprintCallable)
+    // Clear (remove) a shared data flag.
+    UFUNCTION(BlueprintCallable, Category = "Chain Data")
     void ClearFlag(FString Flag);
 
-    UFUNCTION(BlueprintPure)
+    // Check if the shared data contains a specified flag.
+    UFUNCTION(BlueprintPure, Category = "Chain Data")
     bool HasFlag(FString Flag);
 
     // This function returns a copy of all existing flags.
