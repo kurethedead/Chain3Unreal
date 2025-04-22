@@ -2,6 +2,9 @@
 
 #include "Chain3DataSubsystem.h"
 #include "Kismet/KismetStringLibrary.h"
+#include "Kismet/KismetSystemLibrary.h"
+#include "Misc/FileHelper.h"
+#include "Engine/World.h"
 
 bool UChain3DataSubsystem::ShouldCreateSubsystem(UObject *Outer) const
 {
@@ -25,14 +28,7 @@ void UChain3DataSubsystem::Initialize(FSubsystemCollectionBase &Collection)
     }
 }
 
-void UChain3DataSubsystem::Deinitialize()
-{
-    Super::Deinitialize();
-    if (bSaveDataOnExit)
-    {
-        SaveData();
-    }
-}
+void UChain3DataSubsystem::Deinitialize() { Super::Deinitialize(); }
 
 FString UChain3DataSubsystem::GetDataPath()
 {
@@ -62,11 +58,11 @@ void UChain3DataSubsystem::LoadData()
         EnterDoor = StripString(EnterString);
     }
 
-    FString ExitString;
-    if (FFileHelper::LoadFileToString(ExitString, *(DataPath + "exit.door")))
-    {
-        ExitDoor = StripString(ExitString);
-    }
+    // FString ExitString;
+    // if (FFileHelper::LoadFileToString(ExitString, *(DataPath + "exit.door")))
+    //{
+    //     ExitDoor = StripString(ExitString);
+    // }
 
     FString SharedString;
     if (FFileHelper::LoadFileToString(SharedString, *(DataPath + "shareddata.data")))
@@ -85,10 +81,9 @@ void UChain3DataSubsystem::LoadData()
     }
 }
 
-void UChain3DataSubsystem::SaveData()
+void UChain3DataSubsystem::SaveSharedData()
 {
     FString DataPath = GetDataPath();
-    FFileHelper::SaveStringToFile(ExitDoor, *(DataPath + "exit.door"));
     FFileHelper::SaveStringArrayToFile(SharedData, *(DataPath + "shareddata.data"));
 }
 
@@ -104,3 +99,33 @@ void UChain3DataSubsystem::SetFlag(FString Flag)
 void UChain3DataSubsystem::ClearFlag(FString Flag) { SharedData.Remove(StripString(Flag)); }
 
 bool UChain3DataSubsystem::HasFlag(FString Flag) { return SharedData.Contains(StripString(Flag)); }
+
+void UChain3DataSubsystem::ExitDoor(FString _ExitDoor)
+{
+    FString DataPath = GetDataPath();
+    FFileHelper::SaveStringToFile(_ExitDoor, *(DataPath + "exit.door"));
+    FFileHelper::SaveStringArrayToFile(SharedData, *(DataPath + "shareddata.data"));
+    UKismetSystemLibrary::QuitGame(GetWorld(), nullptr, EQuitPreference::Quit, true);
+}
+
+void UChain3DataSubsystem::DeleteFiles(bool bDeleteEnterFile, bool bDeleteExitFile, bool bDeleteSharedDataFile)
+{
+    FString DataPath = GetDataPath();
+    FString EnterPath = DataPath + "enter.door";
+    FString ExitPath = DataPath + "exit.door";
+    FString SharedDataPath = DataPath + "shareddata.data";
+    IFileManager &FileManager = IFileManager::Get();
+
+    if (bDeleteEnterFile && FPaths::ValidatePath(EnterPath) && FPaths::FileExists(EnterPath))
+    {
+        FileManager.Delete(*EnterPath);
+    }
+    if (bDeleteExitFile && FPaths::ValidatePath(ExitPath) && FPaths::FileExists(ExitPath))
+    {
+        FileManager.Delete(*ExitPath);
+    }
+    if (bDeleteSharedDataFile && FPaths::ValidatePath(SharedDataPath) && FPaths::FileExists(SharedDataPath))
+    {
+        FileManager.Delete(*SharedDataPath);
+    }
+}
