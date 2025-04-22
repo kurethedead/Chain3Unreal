@@ -1,1 +1,1 @@
-To use, look for GetChain3DataSubsystem in blueprint search to access the subsystem. You can then call its functions to modify/query the persistent state. Note that by default the state is loaded on game start and saved on game end. To override this behaviour, extend the Chain3DataSubsystem class with a blueprint, and disable the member variable booleans that trigger these behaviours.
+To use, look for GetChain3DataSubsystem in blueprint search to access the subsystem. You can then call its functions (located in the "Chain Data" category) to modify/query the persistent state.
