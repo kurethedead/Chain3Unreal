@@ -83,7 +83,7 @@ protected:
     FString StripString(FString Input);
 
     // Should the subsystem auto load data on game start?
-    UPROPERTY(EditAnywhere)
+    UPROPERTY(EditAnywhere, Category = "Chain Data")
     bool bLoadDataOnStart = true;
 
 private:

@@ -5,6 +5,7 @@
 #include "Kismet/KismetSystemLibrary.h"
 #include "Misc/FileHelper.h"
 #include "Engine/World.h"
+#include "Misc/Paths.h"
 
 bool UChain3DataSubsystem::ShouldCreateSubsystem(UObject *Outer) const
 {
