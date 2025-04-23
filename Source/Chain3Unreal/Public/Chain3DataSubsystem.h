@@ -52,13 +52,15 @@ public:
     UFUNCTION(BlueprintCallable, Category = "Chain Data")
     void ExitDoor(FString _ExitDoor);
 
-    // Set a shared data flag. This will only be saved to disk once you exit through a door (ExitDoor())
+    // Set a shared data flag. If bSaveToDiskImmediately is false, then shared data changes are 
+    // not saved to disk until you quit the game by exiting through a door (ExitDoor()).
     UFUNCTION(BlueprintCallable, Category = "Chain Data")
-    void SetFlag(FString Flag);
+    void SetFlag(FString Flag, bool bSaveToDiskImmediately = true);
 
-    // Clear (remove) a shared data flag. This will only be saved to disk once you exit through a door (ExitDoor())
+    // Clear (remove) a shared data flag. If bSaveToDiskImmediately is false, then shared data changes are 
+    // not saved to disk until you quit the game by exiting through a door (ExitDoor()).
     UFUNCTION(BlueprintCallable, Category = "Chain Data")
-    void ClearFlag(FString Flag);
+    void ClearFlag(FString Flag, bool bSaveToDiskImmediately = true);
 
     // Check if the shared data contains a specified flag.
     UFUNCTION(BlueprintPure, Category = "Chain Data")

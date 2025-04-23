@@ -88,16 +88,27 @@ void UChain3DataSubsystem::SaveSharedData()
     FFileHelper::SaveStringArrayToFile(SharedData, *(DataPath + "shareddata.data"));
 }
 
-void UChain3DataSubsystem::SetFlag(FString Flag)
+void UChain3DataSubsystem::SetFlag(FString Flag, bool bSaveToDiskImmediately)
 {
     FString StrippedFlag = StripString(Flag);
     if (!StrippedFlag.IsEmpty() && !SharedData.Contains(StrippedFlag))
     {
         SharedData.Add(StrippedFlag);
     }
+    if (bSaveToDiskImmediately)
+    {
+        SaveSharedData();
+    }
 }
 
-void UChain3DataSubsystem::ClearFlag(FString Flag) { SharedData.Remove(StripString(Flag)); }
+void UChain3DataSubsystem::ClearFlag(FString Flag, bool bSaveToDiskImmediately)
+{
+    SharedData.Remove(StripString(Flag));
+    if (bSaveToDiskImmediately)
+    {
+        SaveSharedData();
+    }
+}
 
 bool UChain3DataSubsystem::HasFlag(FString Flag) { return SharedData.Contains(StripString(Flag)); }
 
