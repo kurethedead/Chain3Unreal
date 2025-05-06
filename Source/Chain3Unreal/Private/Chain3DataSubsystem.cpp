@@ -34,13 +34,13 @@ void UChain3DataSubsystem::Deinitialize() { Super::Deinitialize(); }
 FString UChain3DataSubsystem::GetDataPath()
 {
 #if WITH_EDITOR
-    return FPaths::ProjectDir() + "StreamingAssets/";
+    return FPaths::ProjectDir();
 #else
     FString Path = FPaths::ProjectDir();
     Path.RemoveFromEnd("/");
     FString PathPart, FilenamePart, ExtensionPart;
     FPaths::Split(Path, PathPart, FilenamePart, ExtensionPart);
-    return PathPart + "/StreamingAssets/";
+    return PathPart + "/";
 #endif
 }
 
