@@ -17,10 +17,9 @@ To use, look for Get Chain3DataSubsystem in blueprint search to access the subsy
 
 Caveats:
 - Do NOT add an empty StreamingAssets/ folder when you package your project (i.e. what Unity/Godot games are doing), since the CHAIN launcher will attempt to read/write save files from there, which this plugin does not handle.
-- After you package your project, your .exe file should be in the top level directory. For example, if my node is T1, then my folder structure would be:
-	- T1
+- After you package your project, your .exe file should be in the top level directory. For example, if my node is T1, then my zipped folder structure would be:
+	- T1.zip
 		- MyGame.exe
 		- MyGame/
 		- Engine/
-		- etc.
-			- Do not have your folder structure be T1 -> Windows -> MyGame.exe. The CHAIN launcher will run your game successfully but not write save files to the location the plugin is looking at.
+        - etc.
