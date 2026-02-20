@@ -1,4 +1,5 @@
 This is a plugin that provides a game subsystem to interface with the CHAIN 3 door / persistent shared data systems. Add this to your project's Plugins/ folder (see how to install an Unreal plugin for more details).
+If you want to compile this for a different Unreal version other than 5.5, make sure to set the correct version the Chain3Unreal.uplugin file.
 
 Persistent data is stored in your project's main directory (same directory as your .exe/.uproject file). The saved files are:
 
